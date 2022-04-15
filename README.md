@@ -74,6 +74,7 @@ GET /api/words
 
 ```
 GET /api/words/:word
+GET /api/words/car
 ```
 
 - Response example
@@ -88,6 +89,7 @@ GET /api/words/:word
 
 ```
 GET /api/letter/:letter
+GET /api/letter/a
 ```
 
 - Response example
@@ -139,6 +141,7 @@ GET /api/letter/:letter
 
 ```
 GET /api/anagrams/:word
+GET /api/anagrams/car
 ```
 
 - Response example
