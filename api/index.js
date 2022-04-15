@@ -28,18 +28,28 @@ app.get("/api/words/:word", (req, res) => {
 
 app.get("/api/letter/:letter", (req, res) => {
   const letter = req.params.letter;
-  const wordsWithLetter = words.filter((word) => {
-    return word.startsWith(letter);
-  });
-  res.json({ letter, words: wordsWithLetter });
+  if (letter.length > 1) {
+    res.status(400).json({ error: "Please provide a single letter" });
+  } else {
+    const wordsWithLetter = words.filter((word) => {
+      return word.startsWith(letter);
+    });
+    res.json({ letter, words: wordsWithLetter });
+  }
 });
 
 app.get("/api/anagrams/:word", (req, res) => {
   const word = req.params.word;
-  const anagrams = words.filter((w) => {
-    return w.split("").sort().join("") === word.split("").sort().join("");
-  });
-  res.json({ word, anagrams });
+  if (word.length < 3) {
+    res.status(400).json({
+      error: "Word must be at least 3 characters long",
+    });
+  } else {
+    const anagrams = words.filter((w) => {
+      return w.split("").sort().join("") === word.split("").sort().join("");
+    });
+    res.json({ word, anagrams });
+  }
 });
 
 app.get("/api/random", (req, res) => {
@@ -81,7 +91,17 @@ app.get("/api/stats", (req, res) => {
     });
     byLetter[letter] = wordsWithLetter.length;
   }
-  res.json({ total, byLetter, posibleWords, shortest, longest });
+  const mostCommonLetters = Object.keys(posibleWords).sort(
+    (a, b) => posibleWords[b] - posibleWords[a]
+  );
+  res.json({
+    total,
+    byLetter,
+    posibleWords,
+    mostCommonLetters,
+    shortest,
+    longest,
+  });
 });
 
 app.listen(port, () => {
