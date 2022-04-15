@@ -13,6 +13,12 @@ app.use(morgan("dev"));
 app.use(cors());
 app.use(helmet());
 
+app.get("/", (req, res) => {
+  res.json({
+    message: "Welcome to the API, please use /api/words to get all words",
+    docs: "https://github.com/GabrielCrackPro/words-api/blob/master/README.md",
+  });
+});
 app.get("/api/words", (req, res) => {
   res.json(words);
 });
